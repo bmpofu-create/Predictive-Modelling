@@ -62,11 +62,11 @@ This collection demonstrates my ability to:
 - Balance accuracy with interpretability  
 
 
-## 📬 Contact  
+📬 Contact  
 If you’d like to discuss predictive modeling, research collaboration, or opportunities:
 
-**LinkedIn:**www.linkedin.com/in/beven-mpofu**  
-**Email:** *bmpofu@mtu.edu*  
+**LinkedIn:**www.linkedin.com/in/beven-mpofu 
+**Email:** *bmpofu@mtu.edu** 
 
 
 
