@@ -53,7 +53,7 @@ Each project includes:
 │── 📁 reports/            # Visualizations & summaries
 
 
-##  Why This Repository Matters  
+Why This Repository Matters  
 This collection demonstrates my ability to:  
 - Build **robust predictive models** for real‑world problems  
 - Apply **statistical reasoning** to guide modeling choices  
@@ -65,8 +65,8 @@ This collection demonstrates my ability to:
 📬 Contact  
 If you’d like to discuss predictive modeling, research collaboration, or opportunities:
 
-**LinkedIn:**www.linkedin.com/in/beven-mpofu 
-**Email:** *bmpofu@mtu.edu** 
+LinkedIn:www.linkedin.com/in/beven-mpofu 
+Email:bmpofu@mtu.edu
 
 
 
