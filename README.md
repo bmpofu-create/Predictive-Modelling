@@ -31,7 +31,7 @@ The dataset includes **87,126 observations** and **126 predictors** after prepro
 
 ---
 
-## 🔧 Preprocessing Pipeline  
+## Preprocessing Pipeline  
 A comprehensive preprocessing workflow was implemented to prepare the dataset for modeling.
 
 ### **1. Handling Missing Values**
@@ -149,8 +149,4 @@ These variables consistently appeared in top‑ranked importance lists across mo
 
 ##  Authors  
 **Beven Mpofu** (bmpofu@mtu.edu)  
-**Sibonginkosi Trust Nkashe** (stnkashe@mtu.edu)
-  
-
-
-Just tell me what you want to add.
+**Sibonginkosi Trust Nkashe** (stnkashe@mtu.edu)  
