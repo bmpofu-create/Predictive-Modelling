@@ -1,72 +1,156 @@
-#  Predictive Modeling Portfolio  
-*A collection of end‑to‑end predictive modeling projects demonstrating statistical rigor, machine learning expertise, and real‑world analytical impact.*
 
-## Overview  
-This repository highlights my work in **predictive modeling**, with projects that span classification, regression, feature engineering, model diagnostics, and evaluation. Each project reflects a complete workflow—from data preprocessing to model interpretation—built with reproducibility and clarity in mind.
+#  Predicting 30‑Day Hospital Readmission  
+### Using the UCI Diabetes 130‑US Hospitals Dataset
 
-I approach predictive modeling with a balance of **statistical intuition**, **machine learning techniques**, and **transparent communication**, ensuring models are both accurate and interpretable.
+##  Overview  
+Hospital readmissions within 30 days are a major challenge for healthcare systems, increasing costs and signaling potential gaps in care quality. This project builds machine learning models to predict whether a patient will be readmitted within 30 days using the **UCI Diabetes 130‑US Hospitals dataset**, which contains over **100,000 inpatient encounters** with demographic, diagnostic, medication, and utilization variables.
 
-##  What’s Inside  
-### 1. End‑to‑End Modeling Pipelines
-Each project includes:  
-- Data cleaning and preprocessing  
-- Exploratory data analysis  
-- Feature engineering  
-- Model training and tuning  
-- Cross‑validation (including grouped CV for clustered data)  
-- Performance evaluation  
-- Interpretation and reporting  
-
-
-### 2. Techniques Demonstrated
-- Supervised learning (classification & regression)  
-- Regularized models (Lasso, Ridge, Elastic Net)  
-- Tree‑based models (Random Forest, XGBoost, Gradient Boosting)  
-- Ensemble methods  
-- Hyperparameter optimization  
-- Handling mixed‑type features (categorical + continuous)  
-- SHAP values and feature importance analysis  
-- Diagnostic checks for degenerate or low‑variance predictors  
+The project includes:  
+- Full preprocessing pipeline in R  
+- Feature engineering (ICD‑9 grouping, dummy encoding, transformations)  
+- Linear and nonlinear classification models  
+- Model comparison using Kappa, specificity, and balanced accuracy  
+- Identification of key predictors influencing readmission  
 
 ---
 
-## Technical Skills Highlighted
+##  Dataset Description  
+The dataset includes **87,126 observations** and **126 predictors** after preprocessing. It contains:
 
-| Area | Skills |
-|------|--------|
-| **Modeling** | Regression, classification, ensembles, cross‑validation |
-| **Data Prep** | Feature engineering, encoding, scaling, imputation |
-| **Diagnostics** | Residual analysis, SHAP, variable importance |
-| **Tools** | Python (Scikit‑learn, Pandas), R (Tidymodels), Jupyter, RStudio |
-| **Workflow** | Reproducible pipelines, clean code, academic‑style documentation |
+### **Response Variable**
+- **Readmitted**: Binary indicator (“Yes” / “No”) for 30‑day hospital readmission.
 
+### **Predictor Categories**
+- **Demographics**: age, gender, race  
+- **Hospital Utilization**: time in hospital, number of inpatient/outpatient/emergency visits  
+- **Clinical Conditions**: diagnoses (ICD‑9), A1C results, glucose serum levels  
+- **Medications**: insulin, diabetesMed, medication changes, number of medications  
+- **Admission/Discharge**: admission type, source, discharge disposition  
 
+> The report notes: *“The dataset consists of 87,126 observations and 126 predictor variables after preprocessing.”* 
 
-## 📂 Repository Structure  
+---
+
+## 🔧 Preprocessing Pipeline  
+A comprehensive preprocessing workflow was implemented to prepare the dataset for modeling.
+
+### **1. Handling Missing Values**
+- “?” converted to `NA`  
+- Categorical: imputed with **Unknown**  
+- Numeric: imputed with **median**  
+> *“Missing values were replaced with a new category labeled Unknown… numeric values were imputed using the median.”* 
+
+### **2. ICD‑9 Diagnosis Grouping**
+High‑cardinality diagnosis codes were grouped into clinically meaningful categories:
+- Circulatory  
+- Respiratory  
+- Digestive  
+- Diabetes  
+- Injury  
+- Musculoskeletal  
+- Genitourinary  
+- Other/Unknown  
+
+### **3. Dummy Encoding & Degenerate Predictor Removal**
+- One‑hot encoding expanded predictors to 126 variables  
+- Removed:
+  - single‑level variables  
+  - near‑zero variance predictors  
+  - high‑cardinality degenerate variables  
+
+### **4. Scaling & Transformation**
+- Centering and scaling applied to all numeric predictors  
+- Box‑Cox and spatial sign transformations used to reduce skewness and outliers  
+> *“Several numeric variables were right‑skewed… Box‑Cox and spatial sign transformations were applied.”* 
+
+---
+
+## Train/Test Split  
+Because the dataset is **highly imbalanced** (≈11.4% readmitted), a careful splitting strategy was used:
+
+- **Stratified sampling** to preserve class proportions  
+- **Group‑aware split** using patient ID to prevent data leakage  
+- **70% training / 30% testing**  
+> *“Splitting was performed using a group‑aware strategy based on the patient identifier… to prevent data leakage.”* 
+
+---
+
+##  Models Trained  
+Both **linear** and **nonlinear** classification models were evaluated.
+
+### **Linear Models**
+- Logistic Regression  
+- Elastic Net  
+- Partial Least Squares (PLS)  
+- Linear Discriminant Analysis (LDA)  
+- Naïve Bayes  
+
+### **Nonlinear Models**
+- K‑Nearest Neighbors (KNN)  
+- Random Forest  
+- Decision Tree (CART)  
+- Neural Network  
+
+All models were tuned using **3‑fold cross‑validation**.
+
+---
+
+##  Model Performance Summary  
+
+###  **Best Overall Model: Linear Discriminant Analysis (LDA)**  
+LDA achieved:
+- **Highest Kappa (0.0753)**  
+- **Highest balanced accuracy**  
+- **Best specificity among all models**  
+
+> *“The best overall model was Linear Discriminant Analysis (LDA)… highest Kappa value (0.0753).”* 
+
+### Key Observations
+- Many models achieved high accuracy (~0.886) due to class imbalance.  
+- Most nonlinear models predicted all cases as “No readmission,” resulting in **zero specificity**.  
+- KNN performed best among nonlinear models but still underperformed compared to LDA.  
+- Naïve Bayes performed poorly due to independence assumption violations.  
+
+---
+
+## Important Predictors  
+The report identifies several predictors strongly associated with readmission risk, including:
+
+- Number of diagnoses  
+- Time in hospital  
+- Prior inpatient/outpatient/emergency visits  
+- A1C results  
+- Diagnosis categories (ICD‑9 groups)  
+
+These variables consistently appeared in top‑ranked importance lists across models.
+
+---
+
+##  Technologies Used  
+- **R** (caret, tidyverse, MASS, glmnet, nnet, randomForest)  
+- **Statistical Modeling**: Logistic Regression, LDA, PLS  
+- **Machine Learning**: KNN, Random Forest, CART, Neural Networks  
+- **Visualization**: ggplot2, heatmaps, correlation matrices  
+
+---
+
+##  Repository Structure  
 ```
-📁 predictive-modeling/
-│── 📄 README.md
-│── 📁 data/               # Cleaned or sample datasets
-│── 📁 notebooks/          # EDA + modeling notebooks
-│── 📁 src/                # Reusable modeling scripts
-│── 📁 models/             # Saved models & metrics
-│── 📁 reports/            # Visualizations & summaries
+.
+├── data/                 # Raw and processed datasets
+├── src/                  # R scripts for preprocessing and modeling
+├── reports/              # Final project report (PDF)
+├── plots/                # EDA and model performance visualizations
+├── images/               # Figures used in the report
+└── README.md             # Project documentation
+```
+
+---
+
+##  Authors  
+**Beven Mpofu** (bmpofu@mtu.edu)  
+**Sibonginkosi Trust Nkashe** (stnkashe@mtu.edu)
+  
 
 
-Why This Repository Matters  
-This collection demonstrates my ability to:  
-- Build **robust predictive models** for real‑world problems  
-- Apply **statistical reasoning** to guide modeling choices  
-- Communicate insights clearly through visualizations and reports  
-- Produce **reproducible, well‑structured** analytical workflows  
-- Balance accuracy with interpretability  
-
-
-📬 Contact  
-If you’d like to discuss predictive modeling, research collaboration, or opportunities:
-
-LinkedIn:www.linkedin.com/in/beven-mpofu 
-Email:bmpofu@mtu.edu
-
-
-
+Just tell me what you want to add.
